@@ -11,4 +11,4 @@ A C# Console application designed to educate South African citizens on cyber thr
 - Voice Greeting integration
 - ASCII Art Logo
 - Personalised User Interaction
-- Defensive Input Validation
+- Defensive Input Validationm 
