@@ -12,3 +12,5 @@ A C# Console application designed to educate South African citizens on cyber thr
 - ASCII Art Logo
 - Personalised User Interaction
 - Defensive Input Validationm 
+- [View CI Build Status]
+- https://github.com/ST10480792/CybersecurityAwarenessBot/actions
