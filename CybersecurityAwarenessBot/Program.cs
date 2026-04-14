@@ -50,7 +50,54 @@ namespace CybersecurityAwarenessBot
             Console.ResetColor();
 
             Console.WriteLine("\nPress any key to open the Learning Menu...");
-            Console.ReadKey();
+            // Question 4: Basic Response System (The Menu Loop)
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                Console.WriteLine("\n--- Cybersecurity Learning Menu ---");
+                Console.WriteLine("1. How are you?");
+                Console.WriteLine("2. What is your purpose?");
+                Console.WriteLine("3. What can I ask you about?");
+                Console.WriteLine("4. Exit");
+
+                Console.Write("\nSelect an option (1-4): ");
+                string choice = Console.ReadLine();
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine($"\n[Bot]: I'm doing great, {userName}! My systems are fully operational.");
+                        System.Threading.Thread.Sleep(1000); // Pauses for 1 second
+                        break;
+                       
+                    case "2":
+                        Console.WriteLine("\n[Bot]: My purpose is to help South African citizens stay safe from cyber threats.");
+                        System.Threading.Thread.Sleep(1000); // Pauses for 1 second
+                        break;
+                       
+                    case "3":
+                        Console.WriteLine("\n[Bot]: You can ask me about password safety, phishing, and suspicious links.");
+                        System.Threading.Thread.Sleep(1000); // Pauses for 1 second
+                        break;
+                        
+                    case "4":
+                        Console.WriteLine($"\n[Bot]: Goodbye, {userName}! Stay safe online.");
+                        keepRunning = false;
+                        System.Threading.Thread.Sleep(1000); // Pauses for 1 second
+                        break;
+                        
+                    default:
+                        // Question 5: Handling invalid input
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n[Bot]: I didn't recognize that. Please enter a number between 1 and 4.");
+                        System.Threading.Thread.Sleep(1000); // Pauses for 1 second
+                        break;
+                        
+                }
+                Console.ResetColor();
+            }
         }
 
         static void PlayGreeting()
