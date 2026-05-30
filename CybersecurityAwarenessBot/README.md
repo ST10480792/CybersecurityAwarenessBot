@@ -172,7 +172,7 @@ Example questions:
 
 ### Chatbot GUI
 
-(Add screenshot here)
+
 
 ### Example Conversation
 
