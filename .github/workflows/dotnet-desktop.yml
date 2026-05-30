@@ -1,25 +1,26 @@
 name: .NET Build Check
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+push:
+branches: [ "master" ]
+pull_request:
+branches: [ "master" ]
 
 jobs:
-  build:
-    runs-on: windows-latest
+build:
+runs-on: windows-latest
 
-    steps:
-    - uses: actions/checkout@v4
+```
+steps:
+- uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+- name: Setup MSBuild
+  uses: microsoft/setup-msbuild@v2
 
-    - name: Restore Dependencies
-      run: dotnet restore
+- name: Restore NuGet Packages
+  run: nuget restore CybersecurityAwarenessBot.sln
 
-    - name: Build Code
-      run: dotnet build --configuration Release --no-restore
+- name: Build Solution
+  run: msbuild CybersecurityAwarenessBot.sln /p:Configuration=Release
+```
+
