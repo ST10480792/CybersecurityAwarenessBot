@@ -1,0 +1,154 @@
+﻿<Window x:Class="CybersecurityAwarenessBot_Part2.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cybersecurity Task Assistant"
+        Height="600"
+        Width="800"
+        Background="#1E1E2F"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="15">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Text="Cybersecurity Task Assistant"
+            FontSize="26"
+            FontWeight="Bold"
+            Foreground="Cyan"
+            HorizontalAlignment="Center"
+            Margin="0,0,0,20"/>
+
+        <!-- Title -->
+
+        <TextBlock
+    Grid.Row="1"
+    Text="Task Title"
+    Foreground="White"
+    FontSize="16"
+    FontWeight="Bold"
+    Margin="0,0,0,40"/>
+
+        <TextBox
+    x:Name="TitleBox"
+    Grid.Row="1"
+    Height="35"
+    Margin="0,25,0,5"
+    FontSize="16"/>
+        
+
+        <!-- Description -->
+
+        <TextBlock
+    Grid.Row="2"
+    Text="Description"
+    Foreground="White"
+    FontSize="16"
+    FontWeight="Bold"
+    Margin="0,0,0,75"/>
+
+        <TextBox
+    x:Name="DescriptionBox"
+    Grid.Row="2"
+    Height="70"
+    Margin="0,25,0,5"
+    AcceptsReturn="True"
+    TextWrapping="Wrap"
+    FontSize="15"/>
+
+        <!-- Reminder Date -->
+
+        <TextBlock
+    Grid.Row="3"
+    Text="Reminder Date"
+    Foreground="White"
+    FontSize="16"
+    FontWeight="Bold"
+    Margin="0,0,0,40"/>
+
+        <DatePicker
+    x:Name="ReminderDatePicker"
+    Grid.Row="3"
+    Margin="0,25,0,5"/>
+
+        <!-- Task List -->
+
+        <DataGrid
+    x:Name="TaskGrid"
+    Grid.Row="4"
+    Margin="0,15"
+    AutoGenerateColumns="False">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn
+                    Header="Title"
+                    Binding="{Binding Title}"
+                    Width="150"/>
+
+                <DataGridTextColumn
+                    Header="Description"
+                    Binding="{Binding Description}"
+                    Width="250"/>
+
+                <DataGridTextColumn
+                    Header="Reminder"
+                    Binding="{Binding ReminderDate}"
+                    Width="150"/>
+
+                <DataGridCheckBoxColumn
+                    Header="Completed"
+                    Binding="{Binding IsCompleted}"
+                    Width="100"/>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <!-- Buttons -->
+
+        <StackPanel
+           Grid.Row="5"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center">
+
+            <Button
+    x:Name="AddTaskButton"
+    Content="Add Task"
+    Width="120"
+    Margin="5"
+    Click="AddTaskButton_Click"/>
+
+            <Button
+    x:Name="CompleteButton"
+    Content="Complete"
+    Width="120"
+    Margin="5"
+    Click="CompleteButton_Click"/>
+            <Button
+                x:Name="DeleteButton"
+                Content="Delete"
+                Width="120"
+                Margin="5"
+                  Click="DeleteButton_Click"/>
+
+            <Button
+                x:Name="RefreshButton"
+                Content="Refresh"
+                Width="120"
+                Margin="5"
+                  Click="RefreshButton_Click"/>
+
+        </StackPanel>
+
+    </Grid>
+
+</Window>

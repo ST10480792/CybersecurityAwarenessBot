@@ -176,11 +176,8 @@ Example questions:
 
 ### Example Conversation
 
-(Add screenshot here)
 
 ### GitHub Actions Successful Run
-
-(Add screenshot of successful workflow here)
 
 ---
 

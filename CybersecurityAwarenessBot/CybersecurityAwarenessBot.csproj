@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="screenshots\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Media\GreetingVoice.wav">

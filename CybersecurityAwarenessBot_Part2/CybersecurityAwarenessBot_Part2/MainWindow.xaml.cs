@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Media;
 using System.Windows;
+using MySql.Data.MySqlClient;
+using CybersecurityAwarenessBot_Part2.Database;
 
 namespace CybersecurityAwarenessBot_Part2
 {
@@ -13,6 +15,34 @@ namespace CybersecurityAwarenessBot_Part2
         private Random random = new Random();
         private string lastTopic = "";
         private string favouriteTopic = "";
+        private List<string> activityLog = new List<string>();
+
+        private void TestDatabaseConnection()
+        {
+            try
+            {
+                DatabaseHelper db = new DatabaseHelper();
+
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+
+                    MessageBox.Show(
+                        "Database connected successfully!",
+                        "Success",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Database Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
 
         // Stores chatbot responses for cybersecurity topics
         private Dictionary<string, List<string>> chatbotResponses =
@@ -20,62 +50,88 @@ namespace CybersecurityAwarenessBot_Part2
         {
     {
         "password",
-        new List<string>
-        {
-            "Use strong passwords with uppercase, lowercase, symbols, and numbers.",
-            "Avoid using birthdays or names in passwords.",
-            "Use a different password for every important account."
-        }
-    },
+new List<string>
+{
+@"A strong password is one of the best ways to protect your online accounts.
+
+Create passwords with at least 12 characters that include uppercase letters, lowercase letters, numbers, and special symbols.
+
+Avoid using names, birthdays, or common words because hackers can guess them easily.
+
+Use a different password for every account and consider using a password manager to store them securely.
+
+Extra Tip: Enable Two-Factor Authentication (2FA) for an extra layer of security."
+}
+},
 
     {
         "phishing",
-        new List<string>
-        {
-            "Be careful of emails asking for personal information.",
-            "Check links carefully before clicking them.",
-            "Scammers often pretend to be trusted companies."
-        }
+new List<string>
+{
+@"Phishing is a cyberattack where criminals pretend to be trusted companies to steal personal information such as passwords or banking details.
+
+Always check the sender's email address, avoid clicking suspicious links, and never provide sensitive information through email or text messages.
+
+If a message creates urgency, threatens you, or promises prizes, treat it with caution.
+
+Extra Tip: Visit the company's official website directly instead of clicking links."
+}
     },
 
     {
         "privacy",
-        new List<string>
-        {
-            "Review your privacy settings regularly.",
-            "Avoid sharing personal information publicly online.",
-            "Protect your accounts using strong passwords and privacy settings."
-        }
+new List<string>
+{
+@"Protecting your online privacy means controlling who can access your personal information.
+
+Avoid sharing sensitive details on social media, review your privacy settings regularly, and only use trusted websites.
+
+Public Wi-Fi networks should be used carefully because attackers can intercept your data.
+
+Extra Tip: Use a VPN when accessing sensitive information on public networks."
+}
     },
 
     {
-        "scam",
-        new List<string>
-        {
-            "Be cautious of messages promising free money or prizes.",
-            "Scammers often create urgency to pressure victims.",
-            "Never share personal details with unknown people online."
-        }
+       "scam",
+new List<string>
+{
+@"Online scams are designed to trick people into sending money or revealing personal information.
+
+Be cautious of offers that seem too good to be true, unexpected prizes, or messages requesting urgent payments.
+
+Always verify the identity of the sender before responding.
+
+Extra Tip: Never send banking information through email or messaging apps."
+}
     },
 
     {
-        "safe browsing",
-        new List<string>
-        {
-            "Always check that websites use HTTPS before entering personal details.",
-            "Avoid downloading files from unknown websites.",
-            "Be cautious when clicking links online."
-        }
+       "safe browsing",
+new List<string>
+{
+@"Safe browsing helps protect you from cyber threats while using the internet.
+
+Keep your browser updated, avoid downloading files from unknown websites, and only install software from trusted sources.
+
+Regularly update your operating system and antivirus software to stay protected.
+
+Extra Tip: Look for HTTPS and the padlock icon before entering personal information on a website."
+}
     },
 
     {
-        "suspicious links",
-        new List<string>
-        {
-            "Hover over a link before clicking to inspect where it leads.",
-            "Avoid clicking links from unknown senders.",
-            "If a message feels urgent or suspicious, verify it first."
-        }
+       "suspicious links",
+new List<string>
+{
+@"Suspicious links may lead to fake websites or install malware on your device.
+
+Before clicking, carefully inspect the URL for spelling mistakes or unusual website addresses.
+
+Hover over links to preview where they lead, and only click links from trusted sources.
+
+Extra Tip: When unsure, type the website address manually into your browser."
+}
     },
 
     {
@@ -124,6 +180,8 @@ namespace CybersecurityAwarenessBot_Part2
             InitializeComponent();
 
             PlayGreeting();
+
+            TestDatabaseConnection();
 
             ChatDisplay.AppendText(
     "Bot: Welcome to the Cybersecurity Awareness Assistant!\n");
@@ -205,6 +263,22 @@ namespace CybersecurityAwarenessBot_Part2
                     }
                 }
 
+                if (userInput.ToLower().Contains("activity log") ||
+                   userInput.ToLower().Contains("what have you done"))
+                {
+                    ChatDisplay.AppendText("Bot: Recent Activity\n\n");
+
+                    foreach (string item in activityLog)
+                    {
+                        ChatDisplay.AppendText("• " + item + "\n");
+                    }
+
+                    ChatDisplay.AppendText("\n");
+
+                    UserInputBox.Clear();
+                    return;
+                }
+
                 // MEMORY RECALL 
                 if (userInput.ToLower().Contains("remember") ||
                     userInput.ToLower().Contains("what do i like") ||
@@ -260,39 +334,110 @@ namespace CybersecurityAwarenessBot_Part2
                     return;
                 }
 
-                bool foundKeyword = false;
 
-                foreach (var topic in chatbotResponses.Keys)
+                string input = userInput.ToLower();
+
+                if (input.Contains("password"))
                 {
-                    if (userInput.ToLower().Contains(topic))
-                    {
-                        foundKeyword = true;
-                        lastTopic = topic;
-
-                        List<string> responses =
-                            chatbotResponses[topic];
-
-                        string selectedResponse =
-                            responses[random.Next(responses.Count)];
-
-                        ChatDisplay.AppendText(
-                            $"Bot: {selectedResponse}\n\n");
-
-                        break;
-                    }
+                    lastTopic = "password";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["password"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
                 }
+                else if (input.Contains("phishing") ||
+                         input.Contains("email") ||
+                         input.Contains("fake email"))
 
-                if (!foundKeyword)
+                {
+                    lastTopic = "phishing";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["phishing"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else if (input.Contains("privacy") ||
+                         input.Contains("personal information"))
+                {
+                    lastTopic = "privacy";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["privacy"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else if (input.Contains("scam") ||
+                         input.Contains("scams") ||
+                         input.Contains("fraud"))
+                {
+                    lastTopic = "scam";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["scam"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else if (input.Contains("malware") ||
+                         input.Contains("virus"))
+                {
+                    lastTopic = "malware";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["malware"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else if (input.Contains("link") ||
+                         input.Contains("url"))
+                {
+                    lastTopic = "suspicious links";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["suspicious links"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else if (input.Contains("browse") ||
+                     input.Contains("browsing") ||
+                      input.Contains("safe browsing") ||
+                       input.Contains("browser") ||
+                       input.Contains("website"))
+                {
+                    lastTopic = "safe browsing";
+                    ChatDisplay.AppendText($"Bot: {chatbotResponses["safe browsing"][0]}\n\n");
+                    UserInputBox.Clear();
+                    return;
+                }
+                else
                 {
                     ChatDisplay.AppendText(
-                        $"Bot: Sorry {userName}, I didn't fully understand that.\n");
+                        $"Bot: Sorry {userName}, I didn't understand that.\n");
 
                     ChatDisplay.AppendText(
-                        "Bot: You can ask me about passwords, phishing, scams, privacy, malware, suspicious links, or safe browsing.\n\n");
+                        "Bot: Try asking about passwords, phishing, malware, scams, privacy, suspicious links or safe browsing.\n\n");
+                    UserInputBox.Clear();
+                    return;
                 }
+
+                
             }
+            UserInputBox.Clear();
+            UserInputBox.Focus();
 
-           
+        }
+
+        private void TaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskWindow taskWindow = new TaskWindow();
+            taskWindow.ShowDialog();
+        }
+
+        private void QuizButton_Click(object sender, RoutedEventArgs e)
+        {
+            QuizWindow quizWindow = new QuizWindow();
+            quizWindow.ShowDialog();
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(
+                "Are you sure you want to exit?",
+                "Exit",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void UserInputBox_KeyDown(object sender,
