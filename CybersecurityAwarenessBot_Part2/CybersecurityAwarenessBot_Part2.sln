@@ -3,8 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36915.13 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CybersecurityAwarenessBot_Part2", "CybersecurityAwarenessBot_Part2\CybersecurityAwarenessBot_Part2.csproj", "{6B0C2AB6-94CA-4494-AC8A-ADD4FF0073AE}"
-EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CybersecurityAwarenessBot_Part2", "CybersecurityAwarenessBot_Part2\CybersecurityAwarenessBot_Part2\CybersecurityAwarenessBot_Part2.csproj", "{6B0C2AB6-94CA-4494-AC8A-ADD4FF0073AE}"
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
